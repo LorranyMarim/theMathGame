@@ -7,49 +7,65 @@ def buildFrameGame(window):
         widget.destroy()
 
     window.title("The Math Game")
-    for i in range(6):
+    for i in range(4):
         window.grid_rowconfigure(i, weight=1)
     for i in range(11):
         window.grid_columnconfigure(i, weight=1)
-    
+
     scoreLabel = tk.Label(
         window,
-        text="Score:",
-        font=("Comic Sans MS", 12, "bold"),
+        text="Score ",
+        font=("Comic Sans MS", 15, "bold"),
         fg="midnight blue"
     )
     scoreLabel.grid(row=0, column=1, pady=10, sticky="NE")
-    
+
     score = tk.Label(
         window,
         text="000000",
-        font=("Comic Sans MS", 12, "normal"),
-        fg="black",
+        font=("Graphik", 15, "normal"),
+        fg="midnight blue",
         bg="white"
     )
-    score.grid(row=0, column=3, pady=10, sticky="NW")
-    
-   
+    score.grid(row=0, column=2, pady=10, sticky="NW")
+
     timeLabel = tk.Label(
         window,
-        text="Time:",
-        font=("Comic Sans MS", 12, "bold"),
+        text="Time ",
+        font=("Comic Sans MS", 15, "bold"),
         fg="midnight blue"
     )
-    timeLabel.grid(row=0, column=5, pady=10, sticky="NE")
-    
+    timeLabel.grid(row=0, column=4, pady=10, sticky="NE")
+
     time = tk.Label(
         window,
         text="00:00:00",  
-        font=("Comic Sans MS", 12, "normal"),
-        fg="black",
+        font=("Graphik", 15, "normal"),
+        fg="midnight blue",
         bg="white"
     )
-    time.grid(row=0, column=7, pady=10, sticky="NW")
+    time.grid(row=0, column=5, pady=10, sticky="NW")
+
+    matchLabel = tk.Label(
+        window,
+        text="Match ",
+        font=("Comic Sans MS", 15, "bold"),
+        fg="midnight blue"
+    )
+    matchLabel.grid(row=0, column=7, pady=10, sticky="NE")
+
+    matchs = tk.Label(
+        window,
+        text=" 1 - 20",  
+        font=("Graphik", 15, "normal"),
+        fg="midnight blue",
+        bg="white"
+    )
+    matchs.grid(row=0, column=8, pady=10, sticky="NW")
 
     def on_enter(event):
         hover_image = ImageEnhance.Brightness(Image.open(event.widget.image_path)).enhance(0.5)
-        btn_icon_hover = ImageTk.PhotoImage(hover_image.resize((25, 25)))
+        btn_icon_hover = ImageTk.PhotoImage(hover_image.resize((30, 30)))
         event.widget.config(image=btn_icon_hover)
         event.widget.hover_image = btn_icon_hover
 
@@ -57,7 +73,7 @@ def buildFrameGame(window):
         event.widget.config(image=event.widget.original_image)
 
     help_icon_path = "C:/Users/Lorrany/Documents/game/img/help.png"
-    help_image = Image.open(help_icon_path).resize((25, 25))
+    help_image = Image.open(help_icon_path).resize((30, 30))
     help_icon = ImageTk.PhotoImage(help_image)
 
     helpButton = tk.Button(
@@ -73,7 +89,7 @@ def buildFrameGame(window):
     helpButton.bind("<Leave>", on_leave)
 
     pause_icon_path = "C:/Users/Lorrany/Documents/game/img/pause.png"
-    pause_image = Image.open(pause_icon_path).resize((25, 25))
+    pause_image = Image.open(pause_icon_path).resize((30, 30))
     pause_icon = ImageTk.PhotoImage(pause_image)
 
     pauseButton = tk.Button(
@@ -95,65 +111,55 @@ def buildFrameGame(window):
     value1 = tk.Label(
         window,
         text=num1,  
-        font=("Graphik", 35, "normal"),
+        font=("Graphik", 50, "bold"),
         fg="midnight blue",
     )
-    value1.grid(row=2, column=2, pady=10, sticky="E")
-    
+    value1.grid(row=1, column=1, pady=10, sticky="SE")
+
     operatorLabel = tk.Label(
         window,
-        text=operator,  
-        font=("Graphik", 35, "normal"),
+        text="?",  
+        font=("Graphik", 50, "bold"),
         fg="red3",
+        bg="white"
     )
-    operatorLabel.grid(row=2, column=3, pady=10)
-    
+    operatorLabel.grid(row=1, column=3, pady=10, sticky="S")
+
     value2 = tk.Label(
         window,
         text=num2,  
-        font=("Graphik", 35, "normal"),
+        font=("Graphik", 50, "bold"),
         fg="midnight blue",
     )
-    value2.grid(row=2, column=4, pady=10, sticky="W")
-    
+    value2.grid(row=1, column=5, pady=10, sticky="S")
+
     equalSimbol = tk.Label(
         window,
         text="=",  
-        font=("Graphik", 35, "normal"),
+        font=("Graphik", 50, "bold"),
         fg="midnight blue",
     )
-    equalSimbol.grid(row=2, column=5, pady=10)
-    
+    equalSimbol.grid(row=1, column=7, pady=10, sticky="S")
+
     resultValue = tk.Label(
         window,
         text=result,  
-        font=("Graphik", 35, "normal"),
+        font=("Graphik", 50, "bold"),
         fg="midnight blue",
     )
-    resultValue.grid(row=2, column=6, pady=10, sticky="W")
+    resultValue.grid(row=1, column=9, pady=10, sticky="SW")
 
+    # Configuração dos botões de operadores
     operator_buttons = [
-        ("sum", "C:/Users/Lorrany/Documents/game/img/sum.png"),
-        ("sub", "C:/Users/Lorrany/Documents/game/img/sub.png"),
-        ("mult", "C:/Users/Lorrany/Documents/game/img/mult.png"),
-        ("div", "C:/Users/Lorrany/Documents/game/img/div.png")
+        ("sum", "C:/Users/Lorrany/Documents/game/img/sum.png", 2),
+        ("sub", "C:/Users/Lorrany/Documents/game/img/sub.png", 4),
+        ("mult", "C:/Users/Lorrany/Documents/game/img/mult.png", 6),
+        ("div", "C:/Users/Lorrany/Documents/game/img/div.png", 8),
     ]
 
-    for idx, (name, path) in enumerate(operator_buttons):
-        icon_image = Image.open(path).resize((50, 50))
+    for name, path, column in operator_buttons:
+        icon_image = Image.open(path).resize((70, 70))
         operator_icon = ImageTk.PhotoImage(icon_image)
-
-        def create_hover_handler(button, image_path):
-            def on_enter(event):
-                hover_image = ImageEnhance.Brightness(Image.open(image_path)).enhance(0.5)
-                btn_icon_hover = ImageTk.PhotoImage(hover_image.resize((50, 50)))
-                button.config(image=btn_icon_hover)
-                button.hover_image = btn_icon_hover
-
-            def on_leave(event):
-                button.config(image=button.original_image)
-
-            return on_enter, on_leave
 
         button = tk.Button(
             window,
@@ -161,12 +167,9 @@ def buildFrameGame(window):
             borderwidth=0,
             command=lambda n=name: print(f"{n} clicked")  
         )
-        button.grid(row=3, column=3 + idx, pady=10, padx=5)
+        button.grid(row=2, column=column, pady=10, sticky="S")
         button.image_path = path
         button.original_image = operator_icon  
-        enter_handler, leave_handler = create_hover_handler(button, path)
-        button.bind("<Enter>", enter_handler)
-        button.bind("<Leave>", leave_handler)
 
     footerText = tk.Label(
         window,
@@ -175,4 +178,4 @@ def buildFrameGame(window):
         fg="gray14",
         justify="center"
     )
-    footerText.grid(row=5, column=1, columnspan=9, pady=(10, 20))
+    footerText.grid(row=3, column=0, columnspan=11, pady=10)
