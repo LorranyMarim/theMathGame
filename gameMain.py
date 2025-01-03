@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk, ImageEnhance
-from logic import generateNumbers, selectOperator, calculates
+from logic import generateNumbers, selectOperator, calculates, startMatch
 
 def buildFrameGame(window):
     for widget in window.winfo_children():
@@ -11,14 +11,33 @@ def buildFrameGame(window):
         window.grid_rowconfigure(i, weight=1)
     for i in range(11):
         window.grid_columnconfigure(i, weight=1)
+        
+    currentMatch, maxMatch = startMatch()
+    
+    matchLabel = tk.Label(
+        window,
+        text="Match ",
+        font=("Comic Sans MS", 15, "bold"),
+        fg="midnight blue"
+    )
+    matchLabel.grid(row=0, column=1, pady=10, sticky="NE")
 
+    matchs = tk.Label(
+        window,
+        text=f" {currentMatch} - {maxMatch} ",  
+        font=("Graphik", 15, "normal"),
+        fg="midnight blue",
+        bg="white"
+    )
+    matchs.grid(row=0, column=2, pady=10, sticky="NW")
+    
     scoreLabel = tk.Label(
         window,
         text="Score ",
         font=("Comic Sans MS", 15, "bold"),
         fg="midnight blue"
     )
-    scoreLabel.grid(row=0, column=1, pady=10, sticky="NE")
+    scoreLabel.grid(row=0, column=4, pady=10, sticky="NE")
 
     score = tk.Label(
         window,
@@ -27,7 +46,7 @@ def buildFrameGame(window):
         fg="midnight blue",
         bg="white"
     )
-    score.grid(row=0, column=2, pady=10, sticky="NW")
+    score.grid(row=0, column=5, pady=10, sticky="NW")
 
     timeLabel = tk.Label(
         window,
@@ -35,7 +54,7 @@ def buildFrameGame(window):
         font=("Comic Sans MS", 15, "bold"),
         fg="midnight blue"
     )
-    timeLabel.grid(row=0, column=4, pady=10, sticky="NE")
+    timeLabel.grid(row=0, column=7, pady=10, sticky="NE")
 
     time = tk.Label(
         window,
@@ -44,32 +63,17 @@ def buildFrameGame(window):
         fg="midnight blue",
         bg="white"
     )
-    time.grid(row=0, column=5, pady=10, sticky="NW")
+    time.grid(row=0, column=8, pady=10, sticky="NW")
 
-    matchLabel = tk.Label(
-        window,
-        text="Match ",
-        font=("Comic Sans MS", 15, "bold"),
-        fg="midnight blue"
-    )
-    matchLabel.grid(row=0, column=7, pady=10, sticky="NE")
+    
 
-    matchs = tk.Label(
-        window,
-        text=" 1 - 20",  
-        font=("Graphik", 15, "normal"),
-        fg="midnight blue",
-        bg="white"
-    )
-    matchs.grid(row=0, column=8, pady=10, sticky="NW")
-
-    def on_enter(event):
+    def on_enterMin(event):
         hover_image = ImageEnhance.Brightness(Image.open(event.widget.image_path)).enhance(0.5)
         btn_icon_hover = ImageTk.PhotoImage(hover_image.resize((30, 30)))
         event.widget.config(image=btn_icon_hover)
         event.widget.hover_image = btn_icon_hover
 
-    def on_leave(event):
+    def on_leaveMin(event):
         event.widget.config(image=event.widget.original_image)
 
     help_icon_path = "C:/Users/Lorrany/Documents/game/img/help.png"
@@ -85,8 +89,8 @@ def buildFrameGame(window):
     helpButton.grid(row=0, column=9, pady=10, sticky="NE")
     helpButton.image_path = help_icon_path
     helpButton.original_image = help_icon 
-    helpButton.bind("<Enter>", on_enter)
-    helpButton.bind("<Leave>", on_leave)
+    helpButton.bind("<Enter>", on_enterMin)
+    helpButton.bind("<Leave>", on_leaveMin)
 
     pause_icon_path = "C:/Users/Lorrany/Documents/game/img/pause.png"
     pause_image = Image.open(pause_icon_path).resize((30, 30))
@@ -101,8 +105,8 @@ def buildFrameGame(window):
     pauseButton.grid(row=0, column=10, pady=10, sticky="NW")
     pauseButton.image_path = pause_icon_path
     pauseButton.original_image = pause_icon  
-    pauseButton.bind("<Enter>", on_enter)
-    pauseButton.bind("<Leave>", on_leave)
+    pauseButton.bind("<Enter>", on_enterMin)
+    pauseButton.bind("<Leave>", on_leaveMin)
 
     num1, num2 = generateNumbers()
     operator = selectOperator()
@@ -149,7 +153,15 @@ def buildFrameGame(window):
     )
     resultValue.grid(row=1, column=9, pady=10, sticky="SW")
 
-    # Configuração dos botões de operadores
+    def on_enterMax(event):
+        hover_image = ImageEnhance.Brightness(Image.open(event.widget.image_path)).enhance(0.5)
+        btn_icon_hover = ImageTk.PhotoImage(hover_image.resize((70, 70)))
+        event.widget.config(image=btn_icon_hover)
+        event.widget.hover_image = btn_icon_hover
+
+    def on_leaveMax(event):
+        event.widget.config(image=event.widget.original_image)
+        
     operator_buttons = [
         ("sum", "C:/Users/Lorrany/Documents/game/img/sum.png", 2),
         ("sub", "C:/Users/Lorrany/Documents/game/img/sub.png", 4),
@@ -169,7 +181,9 @@ def buildFrameGame(window):
         )
         button.grid(row=2, column=column, pady=10, sticky="S")
         button.image_path = path
-        button.original_image = operator_icon  
+        button.original_image = operator_icon
+        button.bind("<Enter>", on_enterMax)
+        button.bind("<Leave>", on_leaveMax)
 
     footerText = tk.Label(
         window,

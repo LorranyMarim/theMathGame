@@ -1,10 +1,15 @@
 import tkinter as tk
-from home import buildFrameHome
+from home import Home_Page
 
-window = tk.Tk()
-window.geometry("800x600")
-window.title("The Math Game")
+home_page = Home_Page()
 
-buildFrameHome(window)
+def buildMain():
+    window = tk.Tk()
+    window.geometry("800x600")
+    window.title("The Math Game")
+    return window
+
+window = buildMain()
+home_page.buildFrameHome(window)
 
 window.mainloop()
