@@ -1,3 +1,4 @@
+import tkinter as tk
 from PIL import Image, ImageTk, ImageEnhance
 
 def resetWindow(window):
@@ -22,3 +23,12 @@ def on_leave(img_path,x,y,btn,event):
     btn_icon = ImageTk.PhotoImage(original_img)
     btn.config(image = btn_icon)
     btn.image = btn_icon
+
+def footerText(win):
+    footer = tk.Label(
+        win,
+        text="1.00v \nCreate by Marim, L.",
+        font=("Graphik", 6),
+        fg="gray14",
+        just="center")
+    return footer

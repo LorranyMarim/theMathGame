@@ -23,7 +23,16 @@ def calculates(a, b, operator):
     else:
         raise ValueError("Operador inválido")
 
-def defineTime():
+
+def startTime():
+    m=00
+    s=00
+    h=00
+    return m,s,h
+
+
+
+"""def defineTime():
     m = 0
     s = 0
     c = 0
@@ -50,4 +59,4 @@ def updateTime(m,s,c,run,label,win):
         win.after(10,updateTime)
     
 
-
+"""

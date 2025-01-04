@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk, ImageEnhance
 from instructions import Instruct_Page
-from utils import resetWindow, defineGrid, on_enter, on_leave
+from utils import resetWindow, defineGrid, on_enter, on_leave, footerText
 from functools import partial
 
 class Home_Page:            
@@ -53,11 +53,5 @@ class Home_Page:
         playButton.bind("<Enter>", partial(on_enter, icon_path, 100, 100, playButton))
         playButton.bind("<Leave>", partial(on_leave, icon_path, 100, 100, playButton))
 
-        footerText = tk.Label(
-            window,
-            text="1.00v \nCreate by Marim, L.",
-            font=("Graphik", 6),
-            fg="gray14",
-            justify="center"
-        )
-        footerText.grid(row=2, column=1, columnspan=9, pady=10)
+        labelBottom = footerText(window)
+        labelBottom.grid(row=2, column=1, columnspan=9, pady=10)
