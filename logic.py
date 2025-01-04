@@ -23,4 +23,31 @@ def calculates(a, b, operator):
     else:
         raise ValueError("Operador inválido")
 
+def defineTime():
+    m = 0
+    s = 0
+    c = 0
+    run = False
+    return m,s,c,run
+
+def start_timer(run):
+    if not run:
+        run = True
+        updateTime()
+
+def updateTime(m,s,c,run,label,win):
+    if run:
+        c += 1
+        if c == 100:
+            c = 0
+            s += 1
+        if s == 60:
+            s = 0
+            m += 1
+
+        label.config(text=f"{m:02}:{s:02}:{c:02}")
+
+        win.after(10,updateTime)
+    
+
 

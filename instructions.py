@@ -1,7 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk, ImageEnhance
-from gameMain import buildFrameGame
-from utils import resetWindow, defineGrid
+from gameMain import Game_Page
+from utils import resetWindow, defineGrid, on_enter, on_leave
+from functools import partial
 
 class Instruct_Page:
     def buildFrameInstructions(self,window):
@@ -10,9 +11,7 @@ class Instruct_Page:
         
         window.title("The Math Game")
         
-        row=3
-        column=11
-        defineGrid(window,row,column)
+        defineGrid(window,3,11)
 
 
         title = tk.Label(
@@ -32,29 +31,22 @@ class Instruct_Page:
         instructionsText.grid(row=1, column=0, columnspan=11, pady=10, sticky="N")
 
         icon_path = "C:/Users/Lorrany/Documents/game/img/go.png"
+        
         image_icon = Image.open(icon_path).resize((120, 120))
         icon = ImageTk.PhotoImage(image_icon)
-
-        def on_enter(event):
-            hover_image = ImageEnhance.Brightness(image_icon).enhance(0.5)
-            go_icon_hover = ImageTk.PhotoImage(hover_image)
-            goButton.config(image=go_icon_hover)
-            goButton.image = go_icon_hover
-
-        def on_leave(event):
-            goButton.config(image=icon)
-            goButton.image = icon
 
         goButton = tk.Button(
             window,
             image=icon,
             borderwidth=0,
-            command=lambda: buildFrameGame(window)  
+            command=lambda: Game_Page.buildFrameGame(self,window)  
         )
+        
         goButton.grid(row=1, column=0, pady=20, columnspan=11, sticky="S")
         goButton.image = icon
-        goButton.bind("<Enter>", on_enter)
-        goButton.bind("<Leave>", on_leave)
+        
+        goButton.bind("<Enter>", partial(on_enter, icon_path, 120, 120, goButton))
+        goButton.bind("<Leave>", partial(on_leave, icon_path, 120, 120, goButton))
 
         footerText = tk.Label(
             window,
