@@ -1,62 +1,59 @@
 import random
+from tkinter import messagebox
 
-def startMatch():
-    c=1
-    m=20
-    return c,m
+class Operating_Data:
+    @staticmethod
+    def startGame(game_page_instance, window):
+        count=1
+        max=20
+        score=0
+        while count<=max:
+            game_page_instance.buildFrameGame(window,count)
+            window.wait_variable(window.continue_game)
+            
+            if not window.running:
+                messagebox.showinfo("Jogo encerrado","Voce saiu do jogo.")
+                break
+            
+            score+=random.randint(10,100)
+            count+=1
+        
+        if count>max:
+            messagebox.showinfo("Fim de jogo", f"Parabéns! Você completou o jogo com {score} pontos.")
+        
 
-def generateNumbers():
-    return random.randint(0, 9), random.randint(0, 9)
-
-def selectOperator():
-    return random.choice(["+", "-", "/", "*"])
-
-def calculates(a, b, operator):
-    if operator == "+":
-        return a + b
-    elif operator == "-":
-        return a - b
-    elif operator == "*":
-        return a * b
-    elif operator == "/":
-        return round(a / (b if b != 0 else 1), 2)
-    else:
-        raise ValueError("Operador inválido")
-
-
-def startTime():
-    m=00
-    s=00
-    h=00
-    return m,s,h
-
-
-
-"""def defineTime():
-    m = 0
-    s = 0
-    c = 0
-    run = False
-    return m,s,c,run
-
-def start_timer(run):
-    if not run:
-        run = True
-        updateTime()
-
-def updateTime(m,s,c,run,label,win):
-    if run:
-        c += 1
-        if c == 100:
-            c = 0
-            s += 1
-        if s == 60:
-            s = 0
-            m += 1
-
-        label.config(text=f"{m:02}:{s:02}:{c:02}")
-
-        win.after(10,updateTime)
+        
+    @staticmethod
+    def startMatch(count,max):
+        return count,max
     
+    @staticmethod
+    def startTime():
+        m=00
+        s=00
+        h=00
+        return m,s,h
 
-"""
+
+class Functional_Data:
+    @staticmethod
+    def generateNumbers():
+        return random.randint(0, 9), random.randint(0, 9)
+    
+    @staticmethod
+    def selectOperator():
+        return random.choice(["+", "-", "/", "*"])
+    
+    @staticmethod
+    def calculates(a, b, operator):
+        if operator == "+":
+            return a + b
+        elif operator == "-":
+            return a - b
+        elif operator == "*":
+            return a * b
+        elif operator == "/":
+            return round(a / (b if b != 0 else 1), 2)
+        else:
+            raise ValueError("Operador inválido")
+

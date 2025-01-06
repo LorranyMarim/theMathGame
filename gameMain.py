@@ -1,14 +1,15 @@
 import tkinter as tk
-from PIL import Image, ImageTk, ImageEnhance
-from logic import generateNumbers, selectOperator, calculates, startMatch, startTime
+from PIL import Image, ImageTk
+from logic import Operating_Data, Functional_Data
 from utils import resetWindow, defineGrid, on_enter, on_leave, footerText
 from functools import partial
+import os
 
 class Game_Page:
-    def buildFrameGame(self,window):
+    def buildFrameGame(self,window,current_match):
         resetWindow(window)
         
-        min,sec,hund = startTime()
+        min,sec,hund = Operating_Data.startTime()
         
         window.title("The Math Game")
         
@@ -20,8 +21,8 @@ class Game_Page:
         window.grid_columnconfigure(9, minsize=60)
 
         
-        currentMatch, maxMatch = startMatch()
-    
+      
+        
         matchLabel = tk.Label(
             window,
             text="Match ",
@@ -32,7 +33,7 @@ class Game_Page:
 
         matchs = tk.Label(
             window,
-            text=f" {currentMatch} - {maxMatch} ",  
+            text=f" {current_match} /20 ",  
             font=("Graphik", 15, "normal"),
             fg="midnight blue",
             bg="white"
@@ -49,7 +50,7 @@ class Game_Page:
 
         score = tk.Label(
             window,
-            text="000000",
+            text="00000",
             font=("Graphik", 15, "normal"),
             fg="midnight blue",
             bg="white"
@@ -107,9 +108,9 @@ class Game_Page:
         pauseButton.bind("<Enter>", partial(on_enter, pause_icon_path, 30, 30, pauseButton))
         pauseButton.bind("<Leave>", partial(on_leave, pause_icon_path, 30, 30, pauseButton))
 
-        num1, num2 = generateNumbers()
-        operator = selectOperator()
-        result = calculates(num1, num2, operator)
+        num1, num2 = Functional_Data.generateNumbers()
+        operator = Functional_Data.selectOperator()
+        result = Functional_Data.calculates(num1, num2, operator)
 
         value1 = tk.Label(
             window,
@@ -153,13 +154,17 @@ class Game_Page:
         resultValue.grid(row=1, column=9, pady=10, sticky="SW")
 
         operator_buttons = [
-            ("C:/Users/Lorrany/Documents/game/img/sum.png", 2, 2),
-            ("C:/Users/Lorrany/Documents/game/img/sub.png", 2, 4),
-            ("C:/Users/Lorrany/Documents/game/img/mult.png", 2, 6),
-            ("C:/Users/Lorrany/Documents/game/img/div.png", 2, 8),
+            ("C:/Users/Lorrany/Documents/game/img/sum.png", 2, 2, "sum"),
+            ("C:/Users/Lorrany/Documents/game/img/sub.png", 2, 4, "sub"),
+            ("C:/Users/Lorrany/Documents/game/img/mult.png", 2, 6, "mult"),
+            ("C:/Users/Lorrany/Documents/game/img/div.png", 2, 8, "div")
         ]
 
-        for path, row, column in operator_buttons:
+        for path, row, column, op in operator_buttons:
+            if not os.path.exists(path):
+                print(f"Erro: Arquivo '{path}' não encontrado.")
+                continue
+
             icon_image = Image.open(path).resize((70, 70))
             operator_icon = ImageTk.PhotoImage(icon_image)
 
@@ -167,14 +172,18 @@ class Game_Page:
                 window,
                 image=operator_icon,
                 borderwidth=0,
-                command=lambda: print("clicked")  
+                command=partial(self.handle_operator, window, op),
             )
-            
+
             button.grid(row=row, column=column, pady=10, sticky="S")
             button.image = operator_icon
-           
-            button.bind("<Enter>", partial(on_enter, path, 70, 70, button))
-            button.bind("<Leave>", partial(on_leave, path, 70, 70, button))
+
+            button.bind("<Enter>", lambda event, p=path: on_enter(p, 70, 70, button, event))
+            button.bind("<Leave>", lambda event, p=path: on_leave(p, 70, 70, button, event))
 
         labelBottom = footerText(window)
         labelBottom.grid(row=3, column=0, columnspan=11, pady=10)
+
+    def handle_operator(self, window, operation):
+        print(f"Operação escolhida: {operation}")
+        window.continue_game.set(True)
